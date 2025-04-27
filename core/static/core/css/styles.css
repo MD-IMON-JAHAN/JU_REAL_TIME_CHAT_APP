@@ -1,0 +1,65 @@
+body {
+    background-color: #f8f9fa;
+}
+
+.card {
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.card-header {
+    font-weight: bold;
+}
+
+.profile-picture {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+}
+
+.chat-container {
+    background-color: #f8f9fa;
+    border-radius: 0.25rem;
+    padding: 1rem;
+    height: 60vh;
+    overflow-y: auto;
+}
+
+.message {
+    margin-bottom: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 1rem;
+    max-width: 70%;
+}
+
+.sent {
+    background-color: #0d6efd;
+    color: white;
+    margin-left: auto;
+}
+
+.received {
+    background-color: #e9ecef;
+    color: black;
+    margin-right: auto;
+}
+
+.message-info {
+    font-size: 0.8rem;
+    color: #6c757d;
+}
+
+.online-status {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 5px;
+}
+
+.online {
+    background-color: #28a745;
+}
+
+.offline {
+    background-color: #6c757d;
+}

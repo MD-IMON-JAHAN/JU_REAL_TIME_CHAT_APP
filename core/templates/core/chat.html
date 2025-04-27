@@ -1,0 +1,119 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Chat{% endblock %}
+
+{% block extra_css %}
+<style>
+    .chat-container {
+        height: 65vh;
+        overflow-y: auto;
+        border: 1px solid #dee2e6;
+        border-radius: 0.5rem;
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+        background-color: #f8f9fa;
+    }
+    .message {
+        margin-bottom: 1rem;
+        padding: 0.75rem 1.25rem;
+        border-radius: 1.25rem;
+        max-width: 75%;
+        word-wrap: break-word;
+    }
+    .sent {
+        background-color: #0d6efd;
+        color: white;
+        margin-left: auto;
+    }
+    .received {
+        background-color: #e9ecef;
+        color: #212529;
+        margin-right: auto;
+    }
+    .message-info {
+        font-size: 0.75rem;
+        color: #6c757d;
+        margin-top: 0.25rem;
+    }
+    #message-input {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+    #message-form button {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5>Active Rooms</h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="list-group list-group-flush">
+                        {% for room in request.user.chat_rooms.all %}
+                            <a href="{% url 'room' room.id %}" 
+                               class="list-group-item list-group-item-action {% if room.id == current_room.id %}active{% endif %}">
+                                {{ room.name }}
+                                <span class="badge bg-{% if room.is_group %}primary{% else %}success{% endif %} float-end">
+                                    {% if room.is_group %}Group{% else %}Private{% endif %}
+                                </span>
+                            </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-9">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center bg-secondary text-white">
+                    <h5 class="mb-0">{{ current_room.name }}</h5>
+                    <span class="badge bg-{% if current_room.is_group %}primary{% else %}success{% endif %}">
+                        {% if current_room.is_group %}Group Chat{% else %}Private Chat{% endif %}
+                    </span>
+                </div>
+                
+                <div class="card-body p-0">
+                    <div class="chat-container" id="chat-container">
+                        {% for message in messages %}
+                            <div class="message {% if message.sender == request.user %}sent{% else %}received{% endif %}">
+                                <div class="message-content">{{ message.content }}</div>
+                                <div class="message-info d-flex justify-content-between">
+                                    <span>{{ message.sender.username }}</span>
+                                    <span>{{ message.timestamp|date:"H:i" }}</span>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    
+                    <form id="message-form" class="p-3 border-top">
+                        {% csrf_token %}
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="message-input" 
+                                   placeholder="Type your message..." autocomplete="off">
+                            <button class="btn btn-primary" type="submit">
+                                <i class="fas fa-paper-plane"></i> Send
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    const roomId = "{{ current_room.id }}";
+    const currentUser = "{{ request.user.username }}";
+</script>
+<script src="{% static 'core/js/chat.js' %}"></script>
+{% endblock %}

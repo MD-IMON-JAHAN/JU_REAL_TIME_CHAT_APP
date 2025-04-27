@@ -1,0 +1,98 @@
+{% extends 'core/base.html' %}
+
+{% block title %}{{ user_profile.username }}'s Profile{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4">
+        <div class="card mb-4 shadow-sm">
+            <div class="card-body text-center">
+                {% if user_profile.profile_picture %}
+                    <img src="{{ user_profile.profile_picture.url }}" 
+                         alt="{{ user_profile.username }}" 
+                         class="rounded-circle mb-3 shadow" 
+                         width="150" height="150">
+                {% else %}
+                    <div class="rounded-circle bg-secondary d-flex align-items-center justify-content-center mb-3 shadow" 
+                         style="width: 150px; height: 150px;">
+                        <span class="text-white display-4">{{ user_profile.username|first|upper }}</span>
+                    </div>
+                {% endif %}
+                
+                <h3 class="card-title">{{ user_profile.username }}</h3>
+                <p class="text-muted mb-2">{{ user_profile.email }}</p>
+                
+                <span class="badge bg-{% if user_profile.is_online %}success{% else %}secondary{% endif %} mb-3">
+                    <i class="fas fa-circle me-1"></i>
+                    {% if user_profile.is_online %}Online{% else %}Offline{% endif %}
+                </span>
+                
+                {% if user_profile == request.user %}
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'edit_profile' %}" class="btn btn-primary">
+                            <i class="fas fa-edit me-1"></i> Edit Profile
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-8">
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">
+                    <i class="fas fa-info-circle me-2"></i>About
+                </h5>
+            </div>
+            <div class="card-body">
+                {% if user_profile.bio %}
+                    <div class="bio-content" style="white-space: pre-line;">{{ user_profile.bio }}</div>
+                {% else %}
+                    <p class="text-muted mb-0">
+                        {% if user_profile == request.user %}
+                            You haven't added a bio yet. <a href="{% url 'edit_profile' %}">Add one now</a>.
+                        {% else %}
+                            This user hasn't added a bio yet.
+                        {% endif %}
+                    </p>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0">
+                    <i class="fas fa-comments me-2"></i>Active Chat Rooms
+                </h5>
+            </div>
+            <div class="card-body">
+                {% if user_profile.chat_rooms.all %}
+                    <div class="list-group">
+                        {% for room in user_profile.chat_rooms.all %}
+                            <a href="{% url 'room' room.id %}" 
+                               class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                                <span>
+                                    <i class="fas fa-{% if room.is_group %}users{% else %}user-friends{% endif %} me-2"></i>
+                                    {{ room.name }}
+                                </span>
+                                <span class="badge bg-{% if room.is_group %}primary{% else %}success{% endif %}">
+                                    {{ room.members.count }} member{{ room.members.count|pluralize }}
+                                </span>
+                            </a>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p class="text-muted mb-0">
+                        {% if user_profile == request.user %}
+                            You're not in any chat rooms yet. <a href="{% url 'create_room' %}">Create one</a> or join existing rooms.
+                        {% else %}
+                            This user isn't in any chat rooms yet.
+                        {% endif %}
+                    </p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
