@@ -5,7 +5,7 @@ from django.contrib import messages
 from .models import *
 from .forms import *
 
-
+# views.py
 # Create your views here.
 @login_required
 def chat_view(request, chatroom_name='public-chat'):
