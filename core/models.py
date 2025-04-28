@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 import shortuuid
-
+# Models.py
 class ChatGroup(models.Model):
   group_name=models.CharField(max_length=128, unique=True,default=shortuuid.uuid)
   groupchat_name = models.CharField(max_length=128, null=True, blank=True)
