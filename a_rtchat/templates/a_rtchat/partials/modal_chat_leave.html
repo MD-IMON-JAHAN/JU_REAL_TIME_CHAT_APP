@@ -1,0 +1,15 @@
+<div id="leave-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+    <div class="bg-white p-6 rounded-lg shadow-lg">
+        <p class="text-gray-800">Are you sure you want to leave <strong>{{ chat_group.groupchat_name }}</strong>?</p>
+        <div class="mt-4 flex justify-end">
+            <form method="post" action="{% url 'chatroom-leave' chat_group.group_name %}">
+                {% csrf_token %}
+                <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded-lg">Leave</button>
+            </form>
+            <button onclick="document.getElementById('leave-modal').classList.add('hidden')"
+                    class="ml-4 px-4 py-2 bg-gray-300 rounded-lg">
+                Cancel
+            </button>
+        </div>
+    </div>
+</div>
