@@ -86,7 +86,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
-    // Function to send a message
+
     function sendMessage() {
         var input = document.getElementById("message-input");
         var message = input.value.trim();
@@ -95,7 +95,7 @@
             addMessage(message, 'sent');
             input.value = '';
             document.getElementById("chat-box").scrollTop = document.getElementById("chat-box").scrollHeight;
-            // Simulating a response from the chat bot
+
             setTimeout(() => {
                 addMessage("You said: " + message, 'received');
                 document.getElementById("chat-box").scrollTop = document.getElementById("chat-box").scrollHeight;
@@ -103,7 +103,7 @@
         }
     }
 
-    // Function to add a new message to the chat box
+
     function addMessage(message, type) {
         var chatBox = document.getElementById("chat-box");
         var messageElement = document.createElement("div");
@@ -118,7 +118,7 @@
         chatBox.appendChild(messageElement);
     }
 
-    // Function to check if Enter key is pressed
+   
     function checkInput(event) {
         if (event.key === "Enter") {
             sendMessage();
