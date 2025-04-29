@@ -22,7 +22,7 @@ class GroupMessage(models.Model):
   def _str_(self):
     return f'{self.author.username} : {self.body}'
 
-
+# meta data
   class Meta:
     ordering = ['-created']
 
