@@ -13,7 +13,7 @@
     <script src="https://unpkg.com/htmx.org@2.0.2"></script>
     {% django_htmx_script %}
     <script src="https://unpkg.com/htmx.org/dist/ext/ws.js"></script>
-    <script src="https://unpkg.com/hyperscript.org@0.9.12"></script>
+    <script src="https://unpkg.com/hyperscript.org@0.9.14"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <style type="text/tailwindcss">
         [x-cloak] { 
@@ -100,21 +100,19 @@
         input[name="remember"] {
             @apply w-auto
         }
-        .alert-info { @apply bg-sky-500 }
-        .alert-success { @apply bg-green-500 }
-        .alert-warning { @apply bg-red-500 }
-        .alert-danger { @apply bg-red-500 }
-         .gray-dot{
-            @apply rounded-full bg-gray-500 p-1.5
-        }
+        .alert-info { @apply bg-sky-600 }
+        .alert-success { @apply bg-emerald-600 }
+        .alert-warning { @apply bg-orange-600 }
+        .alert-danger { @apply bg-red-600 }
         .gray-dot{
-            @apply rounded-full bg-gray-500 p-1.5
+            @apply bg-gray-500 rounded-full p-1.5
         }
-        
+        .green-dot{
+            @apply bg-green-500 rounded-full p-1.5
+        }
         .graylight-dot{
-            @apply rounded-full bg-gray-300 p-1.5
+            @apply bg-gray-300 rounded-full p-1.5
         }
-
     </style>
 </head>
 <body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' class="{% block class %}{% endblock %}">
@@ -125,6 +123,10 @@
 
     {% block layout %}
     {% endblock %}
+
+    {% if user.is_authenticated %}
+    <footer hx-ext="ws" ws-connect="/ws/online-status/" ></footer>
+    {% endif %}
 
     {% block javascript %}{% endblock %}
 

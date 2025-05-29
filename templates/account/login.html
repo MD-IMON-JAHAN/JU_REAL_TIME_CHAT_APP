@@ -2,10 +2,12 @@
 {% load i18n %}
 {% load allauth account %}
 {% block head_title %}
-    {% trans "Login" %}
+    {% trans "Sign In" %}
 {% endblock head_title %}
 {% block content %}
-    <h1>Login</h1>
+    {% element h1 %}
+        {% trans "Sign In" %}
+    {% endelement %}
     <p>
         If you have not created an account yet, then please
     <a href="{% url 'account_signup' %}?next={% url 'profile-onboarding' %}">sign up</a> first.
