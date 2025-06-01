@@ -9,34 +9,21 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
-import environ
+
 from pathlib import Path
 
-from environ import Env
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-env = environ.Env()
-environ.Env.read_env(env_file=BASE_DIR / '.env')
-
-print("SECRET_KEY from .env:", env('SECRET_KEY', default='NOT FOUND'))
-
-ENVIRONMENT = env('ENVIRONMENT',default='production')
-
-# # Build paths inside the project like this: BASE_DIR / 'subdir'.
-# BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env('SECRET_KEY')
+SECRET_KEY = 'django-insecure-rj#-z^kx3j+1ay397otg6j8m_8#v^$^$jys6&41vy^&6le)ezc'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-if ENVIRONMENT == 'development':
- DEBUG = True
-else:
- DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '*']
 
@@ -51,19 +38,19 @@ INSTALLED_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
-    'django.contrib.messages', 
+    'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_cleanup.apps.CleanupConfig',
+    'django_htmx',
     'django.contrib.sites',
-    'admin_honeypot',
     'allauth',
     'allauth.account',
-    'django_htmx',
 
     # My apps
     'a_home',
     'a_users',
     'a_rtchat',
+    'channels'
 ]
 
 SITE_ID = 1
@@ -104,22 +91,14 @@ TEMPLATES = [
 ]
 
 # WSGI_APPLICATION = 'a_core.wsgi.application'
-ASGI_APPLICATION = "a_core.asgi.application"
+ASGI_APPLICATION = 'a_core.asgi.application'
 
-CHANNEL_LAYERS={
-    'default': {
+CHANNEL_LAYERS = {
+    "default": {
         "BACKEND": "channels.layers.InMemoryChannelLayer",
-    }
+    },
 }
 
-# CHANNEL_LAYERS = {
-#     "default": {
-#         "BACKEND": "channels_redis.core.RedisChannelLayer",
-#         "CONFIG": {
-#             "hosts": [("redis://default:yduvuJvwsJzTWVnmcWDLTRZHEndWNyam@turntable.proxy.rlwy.net:53792")],
-#         },
-#     },
-# }
 
 
 # Database
@@ -173,16 +152,18 @@ STATICFILES_DIRS = [ BASE_DIR / 'static' ]
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media' 
 
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+STATIC_URL = 'static/'
+STATICFILES_DIRS = [ BASE_DIR / 'static' ]
+
+MEDIA_URL = 'media/'
+MEDIA_ROOT = BASE_DIR / 'media' 
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_REDIRECT_URL = '/'
-ACCOUNT_SIGNUP_REDIRECT_URL = "{% url 'account_signup' %}?next={% url 'profile-onboarding' %}"
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_LOGIN_METHODS = {'email'}
 ACCOUNT_EMAIL_REQUIRED = True
-
-ACCOUNT_USER_BLACKLIST = ['admin','bigballz','profile']

@@ -1,40 +1,15 @@
-<div id="modal_chat_leave" class="fixed inset-0 z-50 hidden items-center justify-center bg-black bg-opacity-50">
-    <div class="w-full max-w-md mx-4 rounded-lg bg-white shadow-lg p-6">
-        <h2 class="text-xl font-bold mb-4">Leave this chat?</h2>
-        <p class="mb-6">Are you sure you want to leave "{{ chat_group.groupchat_name }}"?</p>
-        
-        <div class="flex space-x-4">
-            <!-- Form will have its action set by JavaScript -->
-            <form id="leaveChatForm" method="POST" class="flex-1">
+<div id="leave-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+    <div class="bg-white p-6 rounded-lg shadow-lg">
+        <p class="text-gray-800">Are you sure you want to leave <strong>{{ chat_group.groupchat_name }}</strong>?</p>
+        <div class="mt-4 flex justify-end">
+            <form method="post" action="{% url 'chatroom-leave' chat_group.group_name %}">
                 {% csrf_token %}
-                <button type="submit" class="w-full bg-red-600 text-white font-semibold px-4 py-2 rounded-lg hover:bg-red-700 transition">
-                    Yes, I want to leave
-                </button>
+                <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded-lg">Leave</button>
             </form>
-            
-            <button type="button" onclick="hideLeaveModal()"
-                    class="flex-1 bg-gray-200 text-gray-800 font-semibold px-4 py-2 rounded-lg hover:bg-gray-300 transition">
+            <button onclick="document.getElementById('leave-modal').classList.add('hidden')"
+                    class="ml-4 px-4 py-2 bg-gray-300 rounded-lg">
                 Cancel
             </button>
         </div>
     </div>
 </div>
-
-<script>
-    // Store the leave URL when modal opens
-    function showLeaveModal(leaveUrl) {
-        document.getElementById('leaveChatForm').action = leaveUrl;
-        document.getElementById('modal_chat_leave').classList.remove('hidden');
-        document.getElementById('modal_chat_leave').classList.add('flex');
-    }
-    
-    function hideLeaveModal() {
-        document.getElementById('modal_chat_leave').classList.add('hidden');
-        document.getElementById('modal_chat_leave').classList.remove('flex');
-    }
-
-    // Close when clicking outside
-    document.getElementById('modal_chat_leave').addEventListener('click', function(e) {
-        if (e.target === this) hideLeaveModal();
-    });
-</script>
